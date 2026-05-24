@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+
+  <!-- 引入 p5.js -->
+  <script src="https://cdn.jsdelivr.net/npm/p5@1.9.4/lib/p5.min.js"></script>
+
+  <style>
+    body{
+      margin:0;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      height:100vh;
+      background:#eee;
+    }
+  </style>
+</head>
+
+<body>
+
+<script>
+
+let img;
+let cols, rows;
+let size = 10;
+let tiles = [];
+
+function preload() {
+
+  img = loadImage(
+
+    "patt.png",
+
+    () => {
+      console.log("IMAGE SUCCESS");
+    },
+
+    () => {
+      console.log("IMAGE FAILED");
+    }
+
+  );
+
+}
+
+function setup() {
+
+  img.resize(400,0);
+
+  createCanvas(img.width, img.height);
+
+  cols = width / size;
+  rows = height / size;
+
+  for (let i=0; i<cols; i++) {
+
+    tiles[i] = [];
+
+    for (let j=0; j<rows; j++) {
+
+      tiles[i][j] =
+        img.get(i*size, j*size, size, size);
+
+    }
+  }
+}
+
+function draw() {
+
+  background(220);
+
+  for (let i=0; i<cols; i++) {
+
+    for (let j=0; j<rows; j++) {
+
+      let x = i*size;
+      let y = j*size;
+
+      push();
+
+      translate(x,y);
+
+      if (i > floor(mouseX / size)) {
+
+        translate(size/2, size/2);
+
+        let angle =
+          floor(random(4)) * PI/2;
+
+        rotate(angle);
+
+        image(
+          tiles[i][j],
+          -size/2,
+          -size/2
+        );
+
+      } else {
+
+        image(tiles[i][j],0,0);
+
+      }
+
+      pop();
+    }
+  }
+}
+
+</script>
+
+</body>
+</html>
